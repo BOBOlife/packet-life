@@ -1,5 +1,5 @@
 <template>
-  <div class="Nav">
+  <div class="nav">
     <router-link to="/">记账</router-link>
     |
     <router-link to="/labels">标签</router-link>
@@ -14,7 +14,12 @@
   };
 </script>
 <style lang="scss" scoped>
-  .Nav a {
+  .nav {
+    border:1px solid red;
+  }
+
+  .nav a {
     text-decoration: none;
+
   }
 </style>
