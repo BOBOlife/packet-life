@@ -2,7 +2,7 @@
   <div>
     <label class="formItem">
       <span class="name">{{this.fieldName}}</span>
-      <input type="text" v-model="inputValue" :placeholder="placeholder">
+      <input type="text" v-model="value" :placeholder="placeholder">
     </label>
   </div>
 </template>
@@ -13,12 +13,11 @@
 
   @Component
   export default class FormItem extends Vue {
-    @Prop() readonly value!: string;
+    @Prop({default:''})  value!: string;
     @Prop({required: true}) fieldName !: string;
     @Prop() placeholder?: string;
-    inputValue = this.value;
 
-    @Watch('inputValue')
+    @Watch('value')
     onValueChanged(val: string) {
       this.$emit('update:value', val);
     }
