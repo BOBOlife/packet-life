@@ -5,7 +5,7 @@
     <div class="notes">
       <FormItem :value.sync="record.notes" field-name="备注" placeholder="在这里输入备注"/>
     </div>
-    <Tags :value.sync="record.tags" :data-source="tags"/>
+    <Tags :value="record.tags" :data-source.sync="tags"/>
     {{record}}
   </Layout>
 </template>
@@ -17,22 +17,20 @@
   import Types from '@/components/Money/Types.vue';
   import Tags from '@/components/Money/Tags.vue';
   import {Component} from 'vue-property-decorator';
+  import store from '@/store/index2.ts';
 
   @Component({
     components: {Tags, Types, FormItem, NumberPad}
   })
   export default class Money extends Vue {
-    tags = window.tagList;
-    recordList = window.recordList;
+    tags = store.tagList;
+    recordList = store.recordList;
     record: RecordItem = {
-      tags: [],
-      notes: '',
-      type: '-',
-      amount: 0
+      tags: [], notes: '', type: '-', amount: 0
     };
 
     saveRecord() {
-      window.createRecord(this.record);
+      store.createRecord(this.record);
     }
   }
 </script>
