@@ -9,19 +9,20 @@
 
 <script lang="ts">
   export default {
-    props:['classPrefix'],
+    props: ['classPrefix'],
     name: 'Layout'
   };
 </script>
 
 <style lang="scss" scoped>
 
-  .layout-wrapper{
+  .layout-wrapper {
     display: flex;
-    flex-direction:column;
-    height: 100vh;
+    flex-direction: column;
+    min-height: 100vh;
   }
-  .content{
+
+  .content {
     flex-grow: 1;
     overflow: auto;
   }

@@ -6,7 +6,7 @@
     <div class="notes">
       <FormItem :value.sync="record.notes" field-name="备注" placeholder="在这里输入备注"/>
     </div>
-    <Tags/>
+    <Tags @update:value="record.tags= $event"/>
   </Layout>
 </template>
 
@@ -37,7 +37,14 @@
     }
 
     saveRecord() {
+      if (!this.record.tags || this.record.tags.length === 0) {
+        return window.alert('请至少选择一个标签');
+      }
       this.$store.commit('createRecord', this.record);
+      if (this.$store.state.createRecordError === null) {
+        window.alert('已保存');
+        this.record.notes = '';
+      }
     }
   }
 </script>

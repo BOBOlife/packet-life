@@ -29,6 +29,7 @@
 
     created() {
       this.$store.commit('fetchTags');
+
     }
 
     toggle(tag: string) {
