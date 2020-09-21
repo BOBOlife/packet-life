@@ -33,6 +33,7 @@
   import dayjs from 'dayjs';
   import clone from '@/lib/clone';
   import Chart from '@/components/Chart.vue';
+  import _ from 'lodash';
 
   @Component({
     components: {Tabs, Chart}
@@ -43,7 +44,8 @@
     }
 
     mounted() {
-      (this.$refs.chartWrapper as HTMLDivElement).scrollLeft = 9999;
+      const div = (this.$refs.chartWrapper as HTMLDivElement);
+      div.scrollLeft = div.scrollWidth;
     }
 
     beautify(string: string) {
@@ -62,7 +64,37 @@
       }
     }
 
+    get y() {
+      const today = new Date();
+      const array = [];
+      for (let i = 0; i <= 29; i++) {
+        const dateString = dayjs(today)
+          .subtract(i, 'day').format('YYYY-MM-DD');
+        const found = _.find(this.recordList, {
+          createdAt: dateString
+        });
+        array.push({
+          date: dateString,
+          value: found ? found.amount : 0
+        });
+      }
+      array.sort((a, b) => {
+        if (a.date > b.date) {
+          return 1;
+        } else if (a.date === b.date) {
+          return 0;
+        } else {
+          return -1;
+        }
+      });
+      return array;
+    }
+
     get x() {
+
+      const keys = this.y.map(item => item.date);
+      const values = this.y.map(item => item.value);
+
       return {
         grid: {
           left: 0,
@@ -70,8 +102,7 @@
         },
         xAxis: {
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
-            'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: keys,
           axisTick: {alignWithLabel: true},
           axisLine: {lineStyle: {color: '#666'}}
         },
@@ -83,8 +114,7 @@
           symbol: 'circle',
           symbolSize: 12,
           itemStyle: {borderWidth: 1, color: '#666'},
-          data: [820, 932, 901, 934, 1290, 1330, 1320,
-            820, 932, 901, 934, 1290, 1330, 1320],
+          data: values,
           type: 'line'
         }],
         tooltip: {show: true, triggerOn: 'click', formatter: '{c}', position: 'top'}
